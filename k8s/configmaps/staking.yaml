@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  config.json: |
+    {
+      "signer": {
+        "privateKey": "0x070d117f6095530da950e41ae328d43523f05127e5bc793340114ad7f7f497ae",
+        "operationalAddress": "0x011efbf2806a9f6fe043c91c176ed88c38907379e59d2d3413a00eeeef08aa7e"
+      }
+    }
+kind: ConfigMap
+metadata:
+  name: staking
+  namespace: starknet

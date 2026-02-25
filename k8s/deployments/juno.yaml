@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juno
+  namespace: starknet
+  labels:
+    app: juno
+    component: starknet-node
+    version: v0.15.8
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: juno
+  template:
+    metadata:
+      labels:
+        app: juno
+        component: starknet-node
+        version: v0.15.18
+    spec:
+      containers:
+        - name: juno
+          image: nethermind/juno:v0.15.18
+          ports:
+            - name: rpc
+              containerPort: 6060
+              protocol: TCP
+            - name: metrics
+              containerPort: 8080
+              protocol: TCP
+            - name: ws
+              containerPort: 6061
+              protocol: TCP
+          args:
+            - --http-port=6060
+            - --http-host=0.0.0.0
+            - --http=true
+            - --db-path=/data
+            - --network=sepolia
+            - --disable-l1-verification
+            - --metrics=true
+            - --metrics-port=8080
+            - --metrics-host=0.0.0.0
+            - --ws=true
+            - --ws-port=6061
+            - --ws-host=0.0.0.0
+            - --log-level=info
+            - --rpc-cors-enable
+          resources:
+            requests:
+              cpu: "2000m"
+              memory: "4Gi"
+            limits:
+              cpu: "4000m"
+              memory: "8Gi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: rpc
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: rpc
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /
+              port: rpc
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 180
+          volumeMounts:
+            - name: juno-data
+              mountPath: /data
+      volumes:
+        - name: juno-data
+          persistentVolumeClaim:
+            claimName: juno-data

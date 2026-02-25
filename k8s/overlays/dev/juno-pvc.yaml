@@ -1,0 +1,17 @@
+# Development/Testing PVC with reduced storage
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: juno-data
+  namespace: starknet
+  labels:
+    app: juno
+    component: storage
+    environment: dev
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi # Reduced from 400Gi for testing
