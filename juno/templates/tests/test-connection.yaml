@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "juno.fullname" . }}-test-connection"
+  labels:
+    {{- include "juno.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "juno.fullname" . }}-juno:{{ .Values.juno.service.ports.rpc }}']
+  restartPolicy: Never
