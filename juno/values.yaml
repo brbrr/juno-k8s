@@ -1,12 +1,13 @@
 imagePullSecrets: []
 nameOverride: ""
-fullnameOverride: "starknet"
+fullnameOverride: ""
 
 terminationGracePeriodSeconds: 300
 
 # -- Juno Starknet node configuration
 juno:
   enabled: true
+  # -- mainnet, sepolia, sepolia-integration
   network: sepolia
   loglevel: "info"
   command: []
@@ -25,18 +26,23 @@ juno:
     accessModes:
       - ReadWriteOnce
     size: 1Ti
-  resources:
-    requests:
-      cpu: "4000m"
-      memory: "8Gi"
-    limits:
-      cpu: "6000m"
-      memory: "16Gi"
+
+  # -- Resource requests and limits for juno container
+  # Example:
+  #   requests:
+  #     cpu: "1"
+  #     memory: "4Gi"
+  #   limits:
+  #     cpu: "2"
+  #     memory: "8Gi"
+  resources: {}
+
   service:
     ports:
       rpc: 6060
       ws: 6061
       metrics: 8080
+
   readinessProbe:
     httpGet:
       path: /ready
@@ -46,6 +52,7 @@ juno:
     timeoutSeconds: 5
     failureThreshold: 3
     successThreshold: 1
+
   initContainers: []
   extraContainers: []
   securityContext: {}
@@ -61,6 +68,7 @@ staking:
     repository: nethermind/starknet-staking-v2
     tag: "latest"
     pullPolicy: IfNotPresent
+
   config:
     # -- Use an existing secret for staking config (recommended for production)
     existingSecret: ""
@@ -71,16 +79,21 @@ staking:
     #       privateKey: "0x..."
     #       operationalAddress: "0x..."
     data: {}
-  resources:
-    requests:
-      cpu: "1000m"
-      memory: "2Gi"
-    limits:
-      cpu: "2000m"
-      memory: "4Gi"
+
+  # -- Resource requests and limits for staking container
+  # Example:
+  #   requests:
+  #     cpu: "1"
+  #     memory: "4Gi"
+  #   limits:
+  #     cpu: "2"
+  #     memory: "8Gi"
+  resources: {}
+
   service:
     ports:
       metrics: 8081
+
   readinessProbe:
     httpGet:
       path: /metrics
@@ -89,6 +102,7 @@ staking:
     periodSeconds: 10
     timeoutSeconds: 5
     failureThreshold: 3
+
   initContainers: []
   extraContainers: []
   securityContext: {}
@@ -108,14 +122,14 @@ serviceMonitor:
   labels: {}
   # -- Additional ServiceMonitor annotations
   annotations: {}
-  # -- ServiceMonitor scrape interval
-  interval: 1m
+  # -- ServiceMonitor scrape interval (leave empty for Prometheus operator default)
+  interval: null
   # -- ServiceMonitor scheme
   scheme: http
   # -- ServiceMonitor TLS configuration
   tlsConfig: {}
-  # -- ServiceMonitor scrape timeout
-  scrapeTimeout: 30s
+  # -- ServiceMonitor scrape timeout (leave empty for Prometheus operator default)
+  scrapeTimeout: null
   # -- ServiceMonitor relabelings
   relabelings: []
   # -- ServiceMonitor metricRelabelings

@@ -31,7 +31,7 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
-Common labels
+Common labels (includes base selector labels)
 */}}
 {{- define "juno.labels" -}}
 helm.sh/chart: {{ include "juno.chart" . }}
@@ -43,11 +43,27 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels
+Base selector labels
 */}}
 {{- define "juno.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "juno.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Juno component selector labels (for matchLabels and service selectors)
+*/}}
+{{- define "juno.juno.selectorLabels" -}}
+app.kubernetes.io/component: juno
+{{ include "juno.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Staking component selector labels (for matchLabels and service selectors)
+*/}}
+{{- define "juno.staking.selectorLabels" -}}
+app.kubernetes.io/component: staking
+{{ include "juno.selectorLabels" . }}
 {{- end }}
 
 {{/*

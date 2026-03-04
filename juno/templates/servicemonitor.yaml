@@ -19,9 +19,11 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: {{ .Values.serviceMonitor.interval }}
-      {{- if .Values.serviceMonitor.scrapeTimeout }}
-      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- with .Values.serviceMonitor.interval }}
+      interval: {{ . }}
+      {{- end }}
+      {{- with .Values.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ . }}
       {{- end }}
       honorLabels: true
       path: {{ .Values.serviceMonitor.path }}
@@ -38,11 +40,10 @@ spec:
       metricRelabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  jobLabel: app.kubernetes.io/component
+  jobLabel: app.kubernetes.io/name
   selector:
     matchLabels:
-      app.kubernetes.io/component: juno
-      {{- include "juno.selectorLabels" . | nindent 6 }}
+      {{- include "juno.juno.selectorLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}
@@ -68,9 +69,11 @@ metadata:
 spec:
   endpoints:
     - port: metrics
-      interval: {{ .Values.serviceMonitor.interval }}
-      {{- if .Values.serviceMonitor.scrapeTimeout }}
-      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- with .Values.serviceMonitor.interval }}
+      interval: {{ . }}
+      {{- end }}
+      {{- with .Values.serviceMonitor.scrapeTimeout }}
+      scrapeTimeout: {{ . }}
       {{- end }}
       honorLabels: true
       path: {{ .Values.serviceMonitor.path }}
@@ -87,11 +90,10 @@ spec:
       metricRelabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  jobLabel: app.kubernetes.io/component
+  jobLabel: app.kubernetes.io/name
   selector:
     matchLabels:
-      app.kubernetes.io/component: staking
-      {{- include "juno.selectorLabels" . | nindent 6 }}
+      {{- include "juno.staking.selectorLabels" . | nindent 6 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

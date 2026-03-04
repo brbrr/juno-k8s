@@ -30,7 +30,9 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       backendRefs:
-        - name: {{ $fullName }}-juno
+        - group: ""
+          kind: Service
+          name: {{ $fullName }}-juno
           port: {{ .servicePort | default $.Values.juno.service.ports.rpc }}
           weight: 1
     {{- end }}

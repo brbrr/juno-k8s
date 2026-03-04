@@ -11,9 +11,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: juno
-      {{- include "juno.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "juno.fullname" . }}-juno
+      {{- include "juno.juno.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "juno.fullname" . }}-juno-headless
   template:
     metadata:
       labels:

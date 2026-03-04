@@ -11,9 +11,8 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: staking
-      {{- include "juno.selectorLabels" . | nindent 6 }}
-  serviceName: {{ include "juno.fullname" . }}-staking
+      {{- include "juno.staking.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "juno.fullname" . }}-staking-headless
   template:
     metadata:
       labels:
