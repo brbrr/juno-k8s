@@ -6,6 +6,7 @@ metadata:
   name: {{ include "juno.fullname" . }}-juno
   labels:
     app.kubernetes.io/component: juno
+    app.kubernetes.io/fullname: {{ include "juno.fullname" . }}-juno
     {{- include "juno.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
@@ -59,6 +60,7 @@ metadata:
   name: {{ include "juno.fullname" . }}-staking
   labels:
     app.kubernetes.io/component: staking
+    app.kubernetes.io/fullname: {{ include "juno.fullname" . }}-staking
     {{- include "juno.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}

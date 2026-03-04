@@ -40,7 +40,7 @@ spec:
       metricRelabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  jobLabel: app.kubernetes.io/name
+  jobLabel: app.kubernetes.io/fullname
   selector:
     matchLabels:
       {{- include "juno.juno.selectorLabels" . | nindent 6 }}
@@ -90,7 +90,7 @@ spec:
       metricRelabelings:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  jobLabel: app.kubernetes.io/name
+  jobLabel: app.kubernetes.io/fullname
   selector:
     matchLabels:
       {{- include "juno.staking.selectorLabels" . | nindent 6 }}
