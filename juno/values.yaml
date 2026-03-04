@@ -15,6 +15,8 @@ juno:
   # Example:
   #   - --disable-l1-verification
   #   - --rpc-cors-enable
+  #
+  # -- Note: Provide --disable-l1-verification or --eth-node WS endpoint
   extraArgs:
     - --disable-l1-verification
   image:
